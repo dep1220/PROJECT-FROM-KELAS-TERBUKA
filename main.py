@@ -3,7 +3,19 @@ import CRUD as CRUD
 
 if __name__ == "__main__":
   sistem_operasi = os.name
+
+  match sistem_operasi:
+    case "posix": os.system("clear")
+    case "nt": os.system("cls")
   
+  print("SELAMAT DATANG DI PROGRAM")
+  print("DATABASE PERPUSTAKAAN")
+  print("=========================")
+
+  # cek database ada atau tidak
+  CRUD.init_console()
+
+
   while(True):
     match sistem_operasi:
       case "posix": os.system("clear")
@@ -20,17 +32,13 @@ if __name__ == "__main__":
 
     user_option = input("Masukan Opsi: ")
 
-    print("\n=========================\n")
-
     match user_option:
-      case "1" : print("Read Data")
-      case "2" : print("Create Data")
+      case "1" : CRUD.read_console()
+      case "2" : CRUD.create_console()
       case "3" : print("Update Data")
       case "4" : print("Delete Data")
 
-    print("\n=========================\n")
-
-    is_done = input("Apakah Selesai (y/n)")
+    is_done = input("Apakah Selesai (y/n)? ")
     if is_done == "y" or is_done == "Y":
       break
 
