@@ -1,7 +1,44 @@
-from time import time
+import os
 from . import Database
 from .Util import random_string
 import time
+
+def delete(no_buku):
+    try:
+        with open(Database.DB_NAME, 'r', encoding="utf-8") as file:
+            lines = file.readlines()
+
+        with open(Database.DB_NAME, 'w', encoding="utf-8") as file:
+            for counter, content in enumerate(lines):
+                if counter != no_buku - 1:
+                    file.write(content)
+
+    except FileNotFoundError:
+        print("File database tidak ditemukan.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+def update(no_buku,pk,date_add,tahun,judul,penulis):
+  data = Database.TEMPLATE.copy()
+
+  data['pk'] = pk
+  data['date_add'] = date_add
+  data['penulis'] = penulis + Database.TEMPLATE["penulis"][len(penulis):]
+  data['judul'] = judul + Database.TEMPLATE["judul"][len(judul):]
+  data['tahun'] = str(tahun)
+
+  data_str = f'{data["pk"]},{data["date_add"]},{data["penulis"]},{data["judul"]},{data["tahun"]}\n'
+
+  panjang_data = len(data_str)
+
+  try:
+    with open(Database.DB_NAME,'r+',encoding="utf-8") as file:
+      file.seek(panjang_data*(no_buku-1))
+      file.write(data_str)
+  except:
+    print("Error dalam update data")
+
 
 def create(tahun, judul, penulis):
   data = Database.TEMPLATE.copy()
@@ -41,7 +78,7 @@ def create_first_data():
   data["date_add"] = time.strftime("%Y-%m-%d-%H-%M-%S%z",time.gmtime())
   data["penulis"] = penulis + Database.TEMPLATE["penulis"][len(penulis):]
   data["judul"] = judul + Database.TEMPLATE["judul"][len(judul):]
-  data["tahun"] = tahun_terbit
+  data["tahun"] = tahun
 
   data_str = f'{data["pk"]},{data["date_add"]},{data["penulis"]},{data["judul"]},{data["tahun"] }\n'
   print(data_str)
@@ -52,11 +89,20 @@ def create_first_data():
     print("Database Gagal di buat")
 
 
-def read():
+def read(**kwargs):
   try:
     with open(Database.DB_NAME, 'r') as file:
       content = file.readlines()
-      return content
+      jumlah_buku = len(content)
+      if "index" in kwargs:
+        index_buku = kwargs["index"]-1
+        if index_buku < 0 or index_buku > jumlah_buku:
+          return False
+        else:
+          return content[index_buku]
+      else:
+        return content
+
   except:
     print("Membaca database gagal")
     return False

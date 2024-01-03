@@ -1,6 +1,11 @@
 {
-  "editor.fontSize" : 18,
-  // "window.zoomLevel" : 1,
+  "editor.fontSize" : 16,
+  "window.zoomLevel" : 0,
   "terminal.integrated.fontSize": 14,
-  "editor.tabSize" : 4
+  "editor.tabSize" : 4,
+  "editor.fontFamily": "Cascadia Mono",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Mayukai Dark",
+  "terminal.integrated.fontFamily": "Cascadia Mono",
+  "terminal.integrated.tabs.defaultColor": "terminal.ansiBlue"
 }
